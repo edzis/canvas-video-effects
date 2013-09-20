@@ -23,6 +23,7 @@
 
 			/* Setup WebWorker messaging */
 			processor.onmessage = function(event){
+				console.timeEnd('worker');
 				ctxEffects.putImageData(event.data.dstData, 0, 0);
 			};
 
@@ -45,9 +46,12 @@
 				ctx.drawImage(video, 0, 0, w, h);
 				var srcData = ctx.getImageData(0,0,w,h);
 
+				console.time('postMessage');
 				processor.postMessage({
 					imageData: srcData
 				});
+				console.timeEnd('postMessage');
+				console.time('worker');
 			};
 		})();
 	</script>
